@@ -2,6 +2,11 @@
 
 This module will allow you to control the WattBox family of devices using companion.
 
+### Requirements
+
+Version 3 needs **Companion 5.0 or later**. It is built on module API 2, which earlier versions of
+Companion cannot load. Stay on the 2.x releases of this module for Companion 3 and 4.
+
 ### Configuration
 
 - The WattBox must be powered on and connected to the same network as the computer that is running Companion.
@@ -18,11 +23,16 @@ Add a button and choose the action you want to use.
 **Available Actions:**
 
 - Turn an outlet on the WattBox on or off.
+- Toggle an outlet, switching it to the opposite of its last reported state.
 - Rebooting outlet.
 - Turning auto reboot on
 - Turning auto reboot off
 - Rename an outlet
 - Set an outlet's mode (Normal, or Reset Only)
+
+Power Toggle works off the state read from the last poll, so leave polling on if you use it.
+Choosing "All" turns every outlet off when all of them are on, and otherwise turns them all on,
+rather than inverting each outlet separately and leaving the rack in a different half on state.
 
 Outlet dropdowns are labelled with the names configured on the WattBox itself, so they read
 "1: ATEM" rather than "Outlet 1". The labels appear once the module has read status from the
@@ -30,8 +40,18 @@ device and update on their own if you rename an outlet.
 
 **Available Presets**
 
-- Outlet On
-- Outlet Off
+The Presets tab has a group per outlet, named after the outlet, each holding three buttons:
+
+- **Toggle**, one key that switches the outlet either way and reads OFF or ON
+- **On** and **Off**, the pair, where each key always does the one thing it says
+
+Every button takes its label from the name set on the WattBox, through that outlet's Name variable,
+so renaming an outlet on the device relabels the buttons. Colour comes from the outlet feedbacks:
+green while an outlet is on, red on the Off key while it is off, and dim otherwise. The fill, the
+edge stripe, the dot and the word all change together so the state reads across a room.
+
+Turn polling on to see any of that follow the device. Without it the buttons still switch outlets,
+but they sit in their resting colours.
 
 **Available Feedbacks**
 
