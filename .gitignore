@@ -1,4 +1,8 @@
 node_modules/
 .DS_Store
+
+# Output of companion-module-build
+pkg/
+*.tgz
 # This repo uses yarn; npm's lockfile must not be committed.
 package-lock.json

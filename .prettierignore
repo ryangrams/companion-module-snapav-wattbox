@@ -1,6 +1,11 @@
 # dependencies
 node_modules
 
+# Build output. The packager writes minified JSON here, which prettier would otherwise
+# fail on every run after the first build.
+pkg
+*.tgz
+
 # Ignore package related files:
 package.json
 yarn.lock
