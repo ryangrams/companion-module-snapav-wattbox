@@ -1,4 +1,5 @@
-const net = require('net')
+import net from 'net'
+import { Buffer } from 'buffer'
 
 // Outlet control (control.cgi) and status (wattbox_info.xml) are happy with HTTP Basic auth, but
 // the configuration endpoint (property.cgi) is not: it answers 200 with the web UI's login
@@ -12,7 +13,7 @@ function parseSetCookie(rawHeaders) {
 	return match ? match[1].trim() : null
 }
 
-module.exports = {
+export default {
 	// Establishes a session and calls back with the cookie, reusing a live one when possible.
 	wattboxLogin: function (callback) {
 		let self = this

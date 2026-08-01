@@ -1,19 +1,19 @@
-const { InstanceBase, InstanceStatus, runEntrypoint } = require('@companion-module/base')
+import { InstanceBase, InstanceStatus } from '@companion-module/base'
 
-const config = require('./config.js')
+import config from './config.js'
 
-const actions = require('./actions.js')
-const feedbacks = require('./feedbacks.js')
-const variables = require('./variables.js')
-const presets = require('./presets.js')
+import actions from './actions.js'
+import feedbacks from './feedbacks.js'
+import variables from './variables.js'
+import presets from './presets.js'
 
-const constants = require('./constants.js')
+import constants from './constants.js'
 
-const utils = require('./utils.js')
+import utils from './utils.js'
 
-const telnet = require('./telnet.js')
-const http = require('./http.js')
-const session = require('./session.js')
+import telnet from './telnet.js'
+import http from './http.js'
+import session from './session.js'
 
 class SnapAVWattboxInstance extends InstanceBase {
 	constructor(internal) {
@@ -99,7 +99,7 @@ class SnapAVWattboxInstance extends InstanceBase {
 		this.initPresets()
 
 		this.checkVariables()
-		this.checkFeedbacks()
+		this.checkAllFeedbacks()
 
 		if (this.config.protocol === 'http') {
 			this.authKey = this.getAuthKey(this.config.username, this.config.password)
@@ -141,4 +141,5 @@ class SnapAVWattboxInstance extends InstanceBase {
 	}
 }
 
-runEntrypoint(SnapAVWattboxInstance, [])
+export default SnapAVWattboxInstance
+export const UpgradeScripts = []

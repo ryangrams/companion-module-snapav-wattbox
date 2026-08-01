@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	initActions: function () {
 		let self = this
 
@@ -26,6 +26,23 @@ module.exports = {
 				],
 				callback: (action) => {
 					self.controlOutlet(action.options.outlet, action.options.powerState)
+				},
+			},
+			powerToggle: {
+				name: 'Power Toggle',
+				description:
+					'Switches an outlet to the opposite of its last reported state, so one button can do both jobs. Needs polling on to stay in step with changes made elsewhere.',
+				options: [
+					{
+						type: 'dropdown',
+						label: 'Outlet',
+						id: 'outlet',
+						default: '1',
+						choices: self.outletChoices,
+					},
+				],
+				callback: (action) => {
+					self.toggleOutlet(action.options.outlet)
 				},
 			},
 			powercycle: {
@@ -75,9 +92,10 @@ module.exports = {
 						useVariables: true,
 					},
 				],
-				callback: async (action) => {
-					const name = await self.parseVariablesInString(action.options.name)
-					self.setOutletName(action.options.outlet, name)
+				callback: (action) => {
+					// Companion resolves variables in the option before handing it over, so the value
+					// that arrives here is already the finished name.
+					self.setOutletName(action.options.outlet, action.options.name)
 				},
 			},
 			setOutletMode: {

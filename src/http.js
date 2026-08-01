@@ -1,12 +1,11 @@
-const { InstanceStatus } = require('@companion-module/base')
+import xml2js from 'xml2js'
+import crypto from 'crypto'
+import net from 'net'
+import { Buffer } from 'buffer'
 
-const xml2js = require('xml2js')
-const crypto = require('crypto')
+import * as cheerio from 'cheerio'
+
 const parseXml = xml2js.parseString
-
-const net = require('net')
-
-const cheerio = require('cheerio')
 
 function parseWattboxHtml(html) {
 	const deviceInfo = {}
@@ -88,7 +87,7 @@ function generateDigestAuthHeader({
 	return `Digest username="${username}", realm="${realm}", nonce="${nonce}", uri="${uri}", qop=${qop}, nc=${nc}, cnonce="${cnonce}", response="${response}", opaque="${opaque}"`
 }
 
-module.exports = {
+export default {
 	sendHTTPCommand: function (path) {
 		let self = this
 		const method = 'GET'
@@ -169,7 +168,7 @@ module.exports = {
 						self.DEVICE_DATA = outletData
 						self.pollSucceeded()
 						self.refreshOutletChoices()
-						self.checkFeedbacks()
+						self.checkAllFeedbacks()
 						self.checkVariables()
 					} else {
 						self.processHttpData(cleanBody)
@@ -357,7 +356,7 @@ module.exports = {
 				// labelled once status has been read. Do this before the feedback pass so a rename
 				// is reflected everywhere in the same update.
 				self.refreshOutletChoices()
-				self.checkFeedbacks()
+				self.checkAllFeedbacks()
 				self.checkVariables()
 			})
 		} catch (error) {

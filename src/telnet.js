@@ -1,8 +1,8 @@
-const { InstanceStatus } = require('@companion-module/base')
+import { InstanceStatus } from '@companion-module/base'
 
-const { Telnet } = require('telnet-client')
+import { Telnet } from 'telnet-client'
 
-module.exports = {
+export default {
 	async initTelnet() {
 		let self = this
 
@@ -148,7 +148,7 @@ module.exports = {
 		self.lastTelnetResponse = response
 
 		self.checkVariables()
-		self.checkFeedbacks()
+		self.checkAllFeedbacks()
 
 		self.QUEUE.shift()
 		self.checkTelnetQueue()

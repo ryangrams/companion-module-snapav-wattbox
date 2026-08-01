@@ -1,6 +1,6 @@
-const { Regex } = require('@companion-module/base')
+import { Regex } from '@companion-module/base'
 
-module.exports = {
+export default {
 	getConfigFields() {
 		return [
 			{
@@ -10,7 +10,6 @@ module.exports = {
 				width: 12,
 				regex: Regex.IP,
 				default: '192.168.1.1',
-				required: true,
 			},
 			{
 				type: 'dropdown',
@@ -24,8 +23,8 @@ module.exports = {
 				id: 'protocol-static',
 				label: 'Protocol',
 				width: 12,
-				default: 'Telnet',
-				isVisible: (config) => config.model === '250',
+				value: 'Telnet',
+				isVisibleExpression: `$(options:model) == '250'`,
 			},
 			{
 				type: 'dropdown',
@@ -37,15 +36,17 @@ module.exports = {
 					{ id: 'http', label: 'HTTP' },
 					{ id: 'telnet', label: 'Telnet' },
 				],
-				isVisible: (config) => config.model === 'other',
+				isVisibleExpression: `$(options:model) == 'other'`,
 			},
 			{
 				type: 'number',
 				id: 'outlets',
 				label: 'Number of outlets',
 				default: 2,
+				min: 1,
+				max: 18,
 				width: 12,
-				isVisible: (config) => config.model === 'other',
+				isVisibleExpression: `$(options:model) == 'other'`,
 			},
 			{
 				type: 'textinput',
@@ -53,7 +54,6 @@ module.exports = {
 				label: 'Username',
 				width: 12,
 				default: 'wattbox',
-				required: true,
 			},
 			{
 				type: 'textinput',
@@ -61,7 +61,6 @@ module.exports = {
 				label: 'Password',
 				width: 12,
 				default: 'wattbox',
-				required: true,
 			},
 			{
 				type: 'checkbox',
@@ -76,9 +75,9 @@ module.exports = {
 				label: `Polling interval in milliseconds`,
 				width: 12,
 				min: 1000,
+				max: 600000,
 				default: 5000,
-				required: true,
-				isVisible: (config) => config.polling,
+				isVisibleExpression: `$(options:polling)`,
 				tooltip:
 					'A WattBox has a single threaded web server. Polling faster than about a second makes it return empty or partial responses, so leave this at 5000 unless you have a reason not to.',
 			},

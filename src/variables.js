@@ -1,66 +1,28 @@
-module.exports = {
+export default {
 	initVariables: function () {
-		var variables = []
-
-		variables.push(
-			{
-				variableId: 'connection',
-				name: 'Connection',
-			},
-			{
-				variableId: 'hostName',
-				name: 'Host Name',
-			},
-			{
-				variableId: 'hardwareVersion',
-				name: 'Hardware Version',
-			},
-			{
-				variableId: 'serialNumber',
-				name: 'Serial Number',
-			},
-			{
-				variableId: 'cloudStatus',
-				name: 'Cloud Status',
-			},
-			{
-				variableId: 'voltage',
-				name: 'Voltage',
-			},
-			{
-				variableId: 'amperage',
-				name: 'Amperage',
-			},
-			{
-				variableId: 'wattage',
-				name: 'Wattage',
-			}
-		)
-
-		let model = this.MODELS.find((model) => model.id === this.config.model)
-
-		let outlets = 2
-
-		if (model) {
-			outlets = model.outlets
+		// Module API 2.x takes the definitions keyed by variable id rather than as an array.
+		const variables = {
+			connection: { name: 'Connection' },
+			hostName: { name: 'Host Name' },
+			hardwareVersion: { name: 'Hardware Version' },
+			serialNumber: { name: 'Serial Number' },
+			cloudStatus: { name: 'Cloud Status' },
+			voltage: { name: 'Voltage' },
+			amperage: { name: 'Amperage' },
+			wattage: { name: 'Wattage' },
 		}
 
+		// Ask the shared helper rather than the model table, so a device set to 'Other' declares the
+		// outlet count the user configured instead of falling back to two.
+		const outlets = this.outletCount()
+
 		for (let i = 0; i < outlets; i++) {
-			variables.push({
-				variableId: `outlet${i + 1}Name`,
-				name: `Outlet ${i + 1} Name`,
-			})
-			variables.push({
-				variableId: `outlet${i + 1}State`,
-				name: `Outlet ${i + 1} State`,
-			})
+			variables[`outlet${i + 1}Name`] = { name: `Outlet ${i + 1} Name` }
+			variables[`outlet${i + 1}State`] = { name: `Outlet ${i + 1} State` }
 		}
 
 		if (this.config.protocol === 'telnet') {
-			variables.push({
-				variableId: 'lastTelnetResponse',
-				name: 'Last Telnet Response',
-			})
+			variables.lastTelnetResponse = { name: 'Last Telnet Response' }
 		}
 
 		this.setVariableDefinitions(variables)

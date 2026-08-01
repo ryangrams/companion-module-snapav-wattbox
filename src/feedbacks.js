@@ -1,6 +1,6 @@
-const { combineRgb } = require('@companion-module/base')
+import { combineRgb } from '@companion-module/base'
 
-module.exports = {
+export default {
 	initFeedbacks: function () {
 		const feedbacks = {}
 
@@ -26,13 +26,8 @@ module.exports = {
 				},
 			],
 			callback: (feedback) => {
-				let opt = feedback.options
-
-				let outlet = parseInt(opt.outlet)
-
-				if (this.DEVICE_DATA.outletInfo[outlet].state == 1) {
-					return true
-				} else return false
+				// The option holds a zero based index, which is what outletState expects.
+				return this.outletState(parseInt(feedback.options.outlet)) === 1
 			},
 		}
 
@@ -54,13 +49,7 @@ module.exports = {
 				},
 			],
 			callback: (feedback) => {
-				let opt = feedback.options
-
-				let outlet = parseInt(opt.outlet)
-
-				if (this.DEVICE_DATA.outletInfo[outlet].state == 0) {
-					return true
-				} else return false
+				return this.outletState(parseInt(feedback.options.outlet)) === 0
 			},
 		}
 
